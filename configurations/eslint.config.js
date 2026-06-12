@@ -11,7 +11,9 @@ export default tseslint.config(
 			'sandbox/**',
 			'node_modules/**',
 			'coverage/**',
-			'coverages/**'
+			'coverages/**',
+			'report/**',
+			'reports/**'
 		]
 	},
 
