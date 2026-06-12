@@ -9,7 +9,7 @@
 		"types": ["bun"],
 
 		"rootDir": "../sources",
-		"outDir": "../build",
+		"outDir": "../library",
 
 		"declaration": true,
 		"declarationMap": true,
