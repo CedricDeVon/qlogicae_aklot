@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../sources/utilities/index.ts"],
+  "sourcesContent": ["import pino from 'pino';\r\n\r\nconst logger = pino();\r\n\r\nexport function greet(name: string): boolean {\r\n\tlogger.info(`Hello ${name}!`);\r\n\r\n\treturn true;\r\n}\r\n"],
+  "mappings": "AAAA,OAAO,UAAU;AAEjB,MAAM,SAAS,KAAK;AAEb,SAAS,MAAM,MAAuB;AAC5C,SAAO,KAAK,SAAS,IAAI,GAAG;AAE5B,SAAO;AACR;",
+  "names": []
+}

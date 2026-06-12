@@ -19,13 +19,13 @@
 	},
 	"description": "QLogicae Aklot",
 	"files": [
-		"build",
+		"library",
 		"documents"
 	],
 	"license": "MIT",
 	"private": false,
 	"scripts": {
-		"clean": "bunx rimraf build",
+		"clean": "bunx rimraf library",
 		"format": "bunx prettier --config './configurations/.prettierrc' --write .",
 		"format:check": "bunx prettier --config './configurations/.prettierrc' --check .",
 		"lint": "bunx eslint --config './configurations/eslint.config.js' .",

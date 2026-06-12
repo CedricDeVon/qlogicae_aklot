@@ -10,7 +10,7 @@ for await (const file of new Glob('**/*.ts').scan('sources')) {
 await build({
 	entryPoints,
 	outbase: 'sources',
-	outdir: 'build',
+	outdir: 'library',
 	bundle: false,
 	format: 'esm',
 	platform: 'neutral',
