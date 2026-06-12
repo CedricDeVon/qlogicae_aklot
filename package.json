@@ -19,7 +19,8 @@
 	},
 	"description": "QLogicae Aklot",
 	"files": [
-		"build"
+		"build",
+		"documents"
 	],
 	"license": "MIT",
 	"private": false,
@@ -35,6 +36,7 @@
 		"test:bench": "bunx vitest bench --watch=false --config './configurations/vitest.bench.config.ts'",
 		"test": "bun run test:unit && bun run test:bench",
 		"deploy": "bun run build && bun publish",
+		"deploy:check": "npm pack --dry-run",
 		"deploy:major": "npm version major && bun run deploy",
 		"deploy:minor": "npm version minor && bun run deploy",
 		"deploy:patch": "npm version patch && bun run deploy"
