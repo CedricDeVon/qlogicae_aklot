@@ -5,9 +5,9 @@ export default defineConfig({
 		globals: true,
 		environment: 'node',
 		coverage: {
+			clean: true,
 			provider: 'v8',
-			reporter: ['clover', 'html', 'json', 'lcov', 'text'],
-			reportsDirectory: './coverage'
+			reporter: ['clover', 'html', 'json', 'lcov', 'text']
 		}
 	}
 });

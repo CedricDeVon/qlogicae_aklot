@@ -3,13 +3,13 @@ import { Glob } from 'bun';
 
 const entryPoints = [];
 
-for await (const file of new Glob('**/*.ts').scan('src')) {
-	entryPoints.push(`src/${file}`);
+for await (const file of new Glob('**/*.ts').scan('sources')) {
+	entryPoints.push(`sources/${file}`);
 }
 
 await build({
 	entryPoints,
-	outbase: 'src',
+	outbase: 'sources',
 	outdir: 'build',
 	bundle: false,
 	format: 'esm',

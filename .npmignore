@@ -1,6 +1,12 @@
 src/
+source/
+sources/
+test/
 tests/
 sandbox/
+config/
+configurations/
+coverage/
 
 .git/
 .vscode/

@@ -10,8 +10,12 @@ bun.lockb
 
 # Folders
 build
+builds
 coverage
+coverages
 output
+outputs
 dist
+dists
 node_modules
 sandbox

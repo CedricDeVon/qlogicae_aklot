@@ -5,10 +5,13 @@ export default tseslint.config(
 	{
 		ignores: [
 			'build/**',
+			'builds/**',
 			'dist/**',
+			'dists/**',
 			'sandbox/**',
 			'node_modules/**',
-			'coverage/**'
+			'coverage/**',
+			'coverages/**'
 		]
 	},
 

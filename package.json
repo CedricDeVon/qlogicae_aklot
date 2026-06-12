@@ -24,18 +24,24 @@
 	"license": "MIT",
 	"private": false,
 	"scripts": {
-		"clean": "rimraf build",
-		"format": "bunx prettier --write .",
-		"format:check": "bunx prettier --check .",
-		"lint": "bunx eslint .",
-		"typescript": "bunx tsc",
-		"build": "bun run clean && bun run format && bun run lint && bun esbuild.js && bunx typescript",
-		"test": "bunx vitest run --coverage",
-		"publish": "bun publish",
-		"publish:initial": "bun publish --access public",
-		"deploy": "bun run clean && bun run build && bun run publish:update",
-		"deploy:initial": "bun run clean && bun run build && bun run publish:initial"
+		"clean": "bunx rimraf build",
+		"format": "bunx prettier --config './configurations/.prettierrc' --write .",
+		"format:check": "bunx prettier --config './configurations/.prettierrc' --check .",
+		"lint": "bunx eslint --config './configurations/eslint.config.js' .",
+		"transpile": "bunx tsc --project './configurations/tsconfig.json'",
+		"bundle": "bun './configurations/esbuild.js'",
+		"build": "bun run clean && bun run format && bun run lint && bun run transpile && bun run bundle",
+		"test:unit": "bunx vitest run --watch=false --config './configurations/vitest.unit.config.ts' --reporter=verbose --coverage",
+		"test:bench": "bunx vitest bench --watch=false --config './configurations/vitest.bench.config.ts'",
+		"test": "bun run test:unit && bun run test:bench",
+		"deploy": "bun run build && bun publish",
+		"deploy:major": "npm version major && bun run deploy",
+		"deploy:minor": "npm version minor && bun run deploy",
+		"deploy:patch": "npm version patch && bun run deploy"
 	},
 	"type": "module",
-	"types": "./build/index.d.ts"
+	"types": "./build/index.d.ts",
+	"dependencies": {
+		"pino": "^10.3.1"
+	}
 }
