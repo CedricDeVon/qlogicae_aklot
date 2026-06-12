@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { greet } from '../../sources/utilities';
+import { greet } from '../../library/utilities';
 
 describe('greet', () => {
 	it('returns a true', () => {

@@ -12,8 +12,6 @@ export default tseslint.config(
 			'node_modules/**',
 			'coverage/**',
 			'coverages/**',
-			'library/**',
-			'libraries/**',
 			'report/**',
 			'reports/**'
 		]
