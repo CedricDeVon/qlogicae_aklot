@@ -36,7 +36,7 @@
 		"test:bench": "bunx vitest bench --watch=false --config './configurations/vitest.bench.config.ts'",
 		"test": "bun run test:unit && bun run test:bench",
 		"deploy:check": "npm pack --dry-run",
-		"deploy:pre": "git add . && git commit -m 'deployment attempt' && git push",
+		"deploy:pre": "git add . && git commit -m 'deployment attempt'",
 		"deploy:post": "bun run build && bun publish",
 		"deploy:major": "bun run deploy:pre && npm version major && bun run deploy:post",
 		"deploy:minor": "bun run deploy:pre && npm version minor && bun run deploy:post",
