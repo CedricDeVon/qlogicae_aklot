@@ -35,7 +35,7 @@
 		"transpile": "bunx tsc --project './configurations/tsconfig.json'",
 		"bundle": "bun './configurations/esbuild.js'",
 		"build": "bun run clean && bun run format && bun run lint && bun run transpile && bun run bundle",
-		"test": "bun run test:unit",
+		"test": "bun run test:unit && bun run test:bench",
 		"test:unit": "bunx vitest run --watch=false --config './configurations/vitest.unit.config.ts' --reporter=verbose --coverage",
 		"test:bench": "bunx vitest bench --watch=false --config './configurations/vitest.bench.config.ts' --coverage",
 		"deploy:check": "npm pack --dry-run",
