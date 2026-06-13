@@ -19,7 +19,7 @@
 	},
 	"description": "QLogicae Aklot",
 	"bin": {
-		"qlogicae_aklot": "./sources/cli.ts"
+		"qlogicae_aklot": "./library/cli.js"
 	},
 	"files": [
 		"library",
