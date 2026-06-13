@@ -1,6 +1,8 @@
 name: Summarize new issues
 
 on:
+    workflow_dispatch:
+      
     issues:
         types: [opened]
 
