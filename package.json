@@ -18,6 +18,9 @@
 		"vitest": "^4.1.8"
 	},
 	"description": "QLogicae Aklot",
+	"bin": {
+		"qlogicae_aklot": "./sources/cli.ts"
+	},
 	"files": [
 		"library",
 		"documents"
