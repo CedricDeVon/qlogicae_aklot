@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../sources/cli.ts"],
+  "sourcesContent": ["#!/usr/bin/env bun\r\n\r\nimport { greet } from './utilities';\r\n\r\ngreet('Bin');\r\n"],
+  "mappings": ";AAEA,SAAS,aAAa;AAEtB,MAAM,KAAK;",
+  "names": []
+}

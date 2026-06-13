@@ -6,8 +6,6 @@ out/**/*
 dist/**/*
 *.tgz
 build/**/*
-library/**/*
-libraries/**/*
 
 # code coverage
 coverage/**/*
