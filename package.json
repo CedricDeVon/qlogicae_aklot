@@ -43,7 +43,7 @@
 		"workflow:test": "bun run build && bun run test",
 		"workflow:test:unit": "bun run build && bun run test:unit",
 		"workflow:test:bench": "bun run build && bun run test:bench",
-		"workflow:deploy:pre": "bun run build && bun run test && git add . && git commit -m 'deployment preparation'",
+		"workflow:deploy:pre": "npm login && bun run build && bun run test && git add . && git commit -m 'deployment preparation'",
 		"workflow:deploy:major": "bun run workflow:deploy:pre && npm version major && bun run workflow:deploy:post",
 		"workflow:deploy:minor": "bun run workflow:deploy:pre && npm version minor && bun run workflow:deploy:post",
 		"workflow:deploy:patch": "bun run workflow:deploy:pre && npm version patch && bun run workflow:deploy:post",
