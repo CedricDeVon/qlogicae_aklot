@@ -6,7 +6,7 @@ on:
 
 jobs:
     unit-test:
-        name: Unit Testing
+        name: Unit Test
         runs-on: ubuntu-latest
 
         steps:
@@ -18,3 +18,17 @@ jobs:
 
             - run: bun install --frozen-lockfile
             - run: bun run workflow:test:unit
+
+    benchmark-test:
+        name: Benchmark Test
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
+
+            - run: bun install --frozen-lockfile
+            - run: bun run workflow:test:benchmark
