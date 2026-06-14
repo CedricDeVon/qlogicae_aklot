@@ -33,7 +33,7 @@ jobs:
             - run: bun install --frozen-lockfile
             - run: bun run workflow:test:benchmark
 
-    install-via-npm:
+    install-via-npm-on-node-22:
         name: Install via npm
         runs-on: ubuntu-latest
 
@@ -44,7 +44,18 @@ jobs:
 
             - run: npm install qlogicae_aklot@latest
 
-    install-via-pnpm:
+    install-via-npm-on-node-24:
+        name: Install via npm
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+
+            - run: npm install qlogicae_aklot@latest
+
+    install-via-pnpm-on-node-22:
         name: Install via pnpm
         runs-on: ubuntu-latest
 
@@ -59,7 +70,22 @@ jobs:
 
             - run: pnpm add qlogicae_aklot@latest
 
-    install-via-yarn:
+    install-via-pnpm-on-node-24:
+        name: Install via pnpm
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: latest
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+
+            - run: pnpm add qlogicae_aklot@latest
+
+    install-via-yarn-on-node-22:
         name: Install via yarn
         runs-on: ubuntu-latest
 
@@ -70,13 +96,37 @@ jobs:
 
             - run: yarn add qlogicae_aklot@latest
 
-    install-via-bun:
+    install-via-yarn-on-node-24:
+        name: Install via yarn
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+
+            - run: yarn add qlogicae_aklot@latest
+
+    install-via-bun-on-node-22:
         name: Install via bun
         runs-on: ubuntu-latest
 
         steps:
             - uses: oven-sh/setup-bun@v2
               with:
+                  node-version: 22
+                  bun-version: latest
+
+            - run: bun add qlogicae_aklot@latest
+
+    install-via-bun-on-node-24:
+        name: Install via bun
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  node-version: 24
                   bun-version: latest
 
             - run: bun add qlogicae_aklot@latest
