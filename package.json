@@ -18,10 +18,10 @@
 		"typescript-eslint": "^8.61.0",
 		"vitest": "^4.1.8"
 	},
-	"description": "QLogicae Aklot",
 	"bin": {
 		"qlogicae_aklot": "./qlogicae/aklot1/cli.js"
 	},
+	"description": "QLogicae Aklot",
 	"files": [
 		"qlogicae",
 		"documents"
@@ -52,8 +52,5 @@
 		"workflow:deploy:post": "(git push && bun publish) || (git push && npm login && bun publish) || (npm login && bun publish)"
 	},
 	"type": "module",
-	"types": "./qlogicae/aklot1/index.d.ts",
-	"dependencies": {
-		"pino": "^10.3.1"
-	}
+	"types": "./qlogicae/aklot1/index.d.ts"
 }
