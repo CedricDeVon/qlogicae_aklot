@@ -46,10 +46,10 @@
 		"workflow:test:unit": "bun run build && bun run test:unit",
 		"workflow:test:benchmark": "bun run build && bun run test:benchmark",
 		"workflow:deploy:pre": "bun run build && git add . && git commit -m 'deployment preparation' || true",
-		"workflow:deploy:major": "bun run workflow:deploy:pre && npm version major && bun run workflow:deploy:post",
-		"workflow:deploy:minor": "bun run workflow:deploy:pre && npm version minor && bun run workflow:deploy:post",
-		"workflow:deploy:patch": "bun run workflow:deploy:pre && npm version patch && bun run workflow:deploy:post",
-		"workflow:deploy:post": "(git push && bun publish) || (git push && npm login && bun publish) || (npm login && bun publish)"
+		"workflow:deploy:major": "bun run workflow:deploy:pre && npm version major --no-git-tag-version && bun run workflow:deploy:post",
+		"workflow:deploy:minor": "bun run workflow:deploy:pre && npm version minor --no-git-tag-version && bun run workflow:deploy:post",
+		"workflow:deploy:patch": "bun run workflow:deploy:pre && npm version patch --no-git-tag-version && bun run workflow:deploy:post",
+		"workflow:deploy:post": "(bun publish && git push) || (npm login && bun publish && git push) || (npm login && bun publish && git push)"
 	},
 	"type": "module",
 	"types": "./qlogicae/aklot1/index.d.ts"
