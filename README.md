@@ -1,3 +1,3 @@
 # qlogicae_aklot
 
-Unofficial VSU-related JavaScript and TypeScript wrapper library
+Unofficial QLogicae Wrapper Library for JavaScript and TypeScript

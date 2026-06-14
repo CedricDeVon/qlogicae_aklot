@@ -1,0 +1,58 @@
+name: Installation
+
+on:
+    push:
+        tags:
+            - 'v*'
+
+    pull_request:
+
+jobs:
+    npm:
+        name: Install via npm
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+
+            - run: npm install qlogicae_aklot@latest
+
+    pnpm:
+        name: Install via pnpm
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: latest
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - run: pnpm add qlogicae_aklot@latest
+
+    yarn:
+        name: Install via yarn
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - run: yarn add qlogicae_aklot@latest
+
+    bun:
+        name: Install via bun
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
+
+            - run: bun add qlogicae_aklot@latest
