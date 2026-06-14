@@ -42,17 +42,7 @@ jobs:
               with:
                   node-version: 22
 
-            - run: npm install qlogicae_aklot@latest
-
-    install-via-npm-on-node-24:
-        name: Install via npm on Node 24
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-
+            - run: sleep 30
             - run: npm install qlogicae_aklot@latest
 
     install-via-pnpm-on-node-22:
@@ -68,7 +58,45 @@ jobs:
               with:
                   node-version: 22
 
+            - run: sleep 30
             - run: pnpm add qlogicae_aklot@latest
+
+    install-via-yarn-on-node-22:
+        name: Install via yarn on Node 22
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - run: sleep 30
+            - run: yarn add qlogicae_aklot@latest
+
+    install-via-bun-on-node-22:
+        name: Install via bun on Node 22
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  node-version: 22
+                  bun-version: latest
+
+            - run: sleep 30
+            - run: bun add qlogicae_aklot@latest
+
+    install-via-npm-on-node-24:
+        name: Install via npm on Node 24
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+
+            - run: sleep 30
+            - run: npm install qlogicae_aklot@latest
 
     install-via-pnpm-on-node-24:
         name: Install via pnpm on Node 24
@@ -83,18 +111,8 @@ jobs:
               with:
                   node-version: 24
 
+            - run: sleep 30
             - run: pnpm add qlogicae_aklot@latest
-
-    install-via-yarn-on-node-22:
-        name: Install via yarn on Node 22
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-
-            - run: yarn add qlogicae_aklot@latest
 
     install-via-yarn-on-node-24:
         name: Install via yarn on Node 24
@@ -105,19 +123,8 @@ jobs:
               with:
                   node-version: 24
 
+            - run: sleep 30
             - run: yarn add qlogicae_aklot@latest
-
-    install-via-bun-on-node-22:
-        name: Install via bun on Node 22
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: oven-sh/setup-bun@v2
-              with:
-                  node-version: 22
-                  bun-version: latest
-
-            - run: bun add qlogicae_aklot@latest
 
     install-via-bun-on-node-24:
         name: Install via bun on Node 24
@@ -129,4 +136,5 @@ jobs:
                   node-version: 24
                   bun-version: latest
 
+            - run: sleep 30
             - run: bun add qlogicae_aklot@latest
