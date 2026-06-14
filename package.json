@@ -1,6 +1,6 @@
 {
 	"name": "qlogicae_aklot",
-	"version": "1.4.14",
+	"version": "1.4.15",
 	"author": "Vaughn Cedric L. Araneta",
 	"main": "./qlogicae/aklot1/index.js",
 	"module": "index.ts",
