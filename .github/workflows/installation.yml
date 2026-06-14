@@ -2,9 +2,6 @@ name: Installation
 
 on:
     push:
-        tags:
-            - 'v*'
-
     pull_request:
 
 jobs:
