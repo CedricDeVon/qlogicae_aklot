@@ -9,6 +9,9 @@ build/**/*
 library/**/*
 libraries/**/*
 
+qlogicae/**/*
+.qlogicae/**/*
+
 # code coverage
 coverage/**/*
 *.lcov

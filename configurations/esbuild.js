@@ -1,16 +1,21 @@
-import { build } from 'esbuild';
 import { Glob } from 'bun';
+import { build } from 'esbuild';
+import { mkdir } from 'node:fs/promises';
 
-const entryPoints = [];
+await mkdir('qlogicae', {
+	recursive: true
+});
+
+const entry_points = [];
 
 for await (const file of new Glob('**/*.ts').scan('sources')) {
-	entryPoints.push(`sources/${file}`);
+	entry_points.push(`sources/${file}`);
 }
 
 await build({
-	entryPoints,
+	entryPoints: entry_points,
 	outbase: 'sources',
-	outdir: 'library',
+	outdir: 'qlogicae',
 	bundle: false,
 	format: 'esm',
 	platform: 'neutral',

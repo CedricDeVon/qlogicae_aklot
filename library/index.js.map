@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../sources/index.ts"],
-  "sourcesContent": ["export * from './utilities';\r\n"],
-  "mappings": "AAAA,cAAc;",
-  "names": []
-}

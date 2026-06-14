@@ -9,7 +9,7 @@
 		"types": ["bun"],
 
 		"rootDir": "../sources",
-		"outDir": "../library",
+		"outDir": "../qlogicae",
 
 		"declaration": true,
 		"declarationMap": true,

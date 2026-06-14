@@ -13,7 +13,9 @@ export default tseslint.config(
 			'coverage/**',
 			'coverages/**',
 			'report/**',
-			'reports/**'
+			'reports/**',
+			'.qlogicae/**',
+			'qlogicae/**'
 		]
 	},
 
