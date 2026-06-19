@@ -88,13 +88,13 @@ jobs:
             - run: sleep 30
 
             - if: matrix.package_manager == 'npm'
-              run: cd ./typescript && npm install qlogicae_aklot@latest
+              run: npm install qlogicae_aklot@latest
 
             - if: matrix.package_manager == 'pnpm'
-              run: cd ./typescript && pnpm add qlogicae_aklot@latest
+              run: pnpm add qlogicae_aklot@latest
 
             - if: matrix.package_manager == 'yarn'
-              run: cd ./typescript && yarn add qlogicae_aklot@latest
+              run: yarn add qlogicae_aklot@latest
 
             - if: matrix.package_manager == 'bun'
-              run: cd ./typescript && bun add qlogicae_aklot@latest
+              run: bun add qlogicae_aklot@latest
