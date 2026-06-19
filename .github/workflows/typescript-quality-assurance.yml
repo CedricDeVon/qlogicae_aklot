@@ -4,10 +4,18 @@ on:
     push:
     pull_request:
 
+defaults:
+    run:
+        shell: bash
+
 jobs:
     unit-test:
         name: Unit Tests
         runs-on: ubuntu-latest
+
+        defaults:
+            run:
+                working-directory: ./typescript
 
         steps:
             - uses: actions/checkout@v4
@@ -16,7 +24,6 @@ jobs:
               with:
                   bun-version: latest
 
-            - run: cd typescript
             - run: bun install --frozen-lockfile
             - run: bun run workflow:test:unit
 
@@ -24,6 +31,10 @@ jobs:
         name: Benchmark Tests
         runs-on: ubuntu-latest
 
+        defaults:
+            run:
+                working-directory: ./typescript
+
         steps:
             - uses: actions/checkout@v4
 
@@ -31,120 +42,59 @@ jobs:
               with:
                   bun-version: latest
 
-            - run: cd typescript
             - run: bun install --frozen-lockfile
             - run: bun run workflow:test:benchmark
 
-    install-via-npm-on-node-22:
-        name: Install via npm on Node 22
+    install:
+        name: Install via ${{ matrix.package_manager }} on Node ${{ matrix.node_version }}
         runs-on: ubuntu-latest
 
+        strategy:
+            fail-fast: false
+            matrix:
+                node_version: [22, 24]
+                package_manager:
+                    - npm
+                    - pnpm
+                    - yarn
+                    - bun
+
         steps:
-            - uses: actions/setup-node@v4
+            - if: matrix.package_manager == 'npm'
+              uses: actions/setup-node@v4
               with:
-                  node-version: 22
+                  node-version: ${{ matrix.node_version }}
 
-            - run: cd typescript
-            - run: sleep 30
-            - run: npm install qlogicae_aklot@latest
-
-    install-via-pnpm-on-node-22:
-        name: Install via pnpm on Node 22
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: pnpm/action-setup@v4
+            - if: matrix.package_manager == 'pnpm'
+              uses: pnpm/action-setup@v4
               with:
                   version: latest
 
-            - uses: actions/setup-node@v4
+            - if: matrix.package_manager == 'pnpm'
+              uses: actions/setup-node@v4
               with:
-                  node-version: 22
+                  node-version: ${{ matrix.node_version }}
 
-            - run: cd typescript
-            - run: sleep 30
-            - run: pnpm add qlogicae_aklot@latest
-
-    install-via-yarn-on-node-22:
-        name: Install via yarn on Node 22
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/setup-node@v4
+            - if: matrix.package_manager == 'yarn'
+              uses: actions/setup-node@v4
               with:
-                  node-version: 22
+                  node-version: ${{ matrix.node_version }}
 
-            - run: cd typescript
-            - run: sleep 30
-            - run: yarn add qlogicae_aklot@latest
-
-    install-via-bun-on-node-22:
-        name: Install via bun on Node 22
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: oven-sh/setup-bun@v2
+            - if: matrix.package_manager == 'bun'
+              uses: oven-sh/setup-bun@v2
               with:
-                  node-version: 22
                   bun-version: latest
 
-            - run: cd typescript
             - run: sleep 30
-            - run: bun add qlogicae_aklot@latest
 
-    install-via-npm-on-node-24:
-        name: Install via npm on Node 24
-        runs-on: ubuntu-latest
+            - if: matrix.package_manager == 'npm'
+              run: cd ./typescript && npm install qlogicae_aklot@latest
 
-        steps:
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-                    
-            - run: cd typescript
-            - run: sleep 30
-            - run: npm install qlogicae_aklot@latest
+            - if: matrix.package_manager == 'pnpm'
+              run: cd ./typescript && pnpm add qlogicae_aklot@latest
 
-    install-via-pnpm-on-node-24:
-        name: Install via pnpm on Node 24
-        runs-on: ubuntu-latest
+            - if: matrix.package_manager == 'yarn'
+              run: cd ./typescript && yarn add qlogicae_aklot@latest
 
-        steps:
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: latest
-
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-
-            - run: cd typescript
-            - run: sleep 30
-            - run: pnpm add qlogicae_aklot@latest
-
-    install-via-yarn-on-node-24:
-        name: Install via yarn on Node 24
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-
-            - run: cd typescript
-            - run: sleep 30
-            - run: yarn add qlogicae_aklot@latest
-
-    install-via-bun-on-node-24:
-        name: Install via bun on Node 24
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: oven-sh/setup-bun@v2
-              with:
-                  node-version: 24
-                  bun-version: latest
-
-            - run: cd typescript
-            - run: sleep 30
-            - run: bun add qlogicae_aklot@latest
+            - if: matrix.package_manager == 'bun'
+              run: cd ./typescript && bun add qlogicae_aklot@latest
