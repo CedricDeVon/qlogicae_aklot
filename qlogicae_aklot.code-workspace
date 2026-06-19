@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},				
+		{
+			"path": "typescript"
+		},
+		{
+			"path": "documents"
+		},
+		{
+			"path": ".github"
+		},
+	],
+	"settings": {}
+}

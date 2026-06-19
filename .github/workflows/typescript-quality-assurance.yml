@@ -1,4 +1,4 @@
-name: Quality Assurance
+name: TypeScript | Quality Assurance
 
 on:
     push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
     unit-test:
-        name: Unit Test
+        name: Unit Tests
         runs-on: ubuntu-latest
 
         steps:
@@ -16,11 +16,12 @@ jobs:
               with:
                   bun-version: latest
 
+            - run: cd typescript
             - run: bun install --frozen-lockfile
             - run: bun run workflow:test:unit
 
     benchmark-test:
-        name: Benchmark Test
+        name: Benchmark Tests
         runs-on: ubuntu-latest
 
         steps:
@@ -30,6 +31,7 @@ jobs:
               with:
                   bun-version: latest
 
+            - run: cd typescript
             - run: bun install --frozen-lockfile
             - run: bun run workflow:test:benchmark
 
@@ -42,6 +44,7 @@ jobs:
               with:
                   node-version: 22
 
+            - run: cd typescript
             - run: sleep 30
             - run: npm install qlogicae_aklot@latest
 
@@ -58,6 +61,7 @@ jobs:
               with:
                   node-version: 22
 
+            - run: cd typescript
             - run: sleep 30
             - run: pnpm add qlogicae_aklot@latest
 
@@ -70,6 +74,7 @@ jobs:
               with:
                   node-version: 22
 
+            - run: cd typescript
             - run: sleep 30
             - run: yarn add qlogicae_aklot@latest
 
@@ -83,6 +88,7 @@ jobs:
                   node-version: 22
                   bun-version: latest
 
+            - run: cd typescript
             - run: sleep 30
             - run: bun add qlogicae_aklot@latest
 
@@ -94,7 +100,8 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: 24
-
+                    
+            - run: cd typescript
             - run: sleep 30
             - run: npm install qlogicae_aklot@latest
 
@@ -111,6 +118,7 @@ jobs:
               with:
                   node-version: 24
 
+            - run: cd typescript
             - run: sleep 30
             - run: pnpm add qlogicae_aklot@latest
 
@@ -123,6 +131,7 @@ jobs:
               with:
                   node-version: 24
 
+            - run: cd typescript
             - run: sleep 30
             - run: yarn add qlogicae_aklot@latest
 
@@ -136,5 +145,6 @@ jobs:
                   node-version: 24
                   bun-version: latest
 
+            - run: cd typescript
             - run: sleep 30
             - run: bun add qlogicae_aklot@latest
