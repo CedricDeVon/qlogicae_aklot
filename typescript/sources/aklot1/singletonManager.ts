@@ -1,8 +1,5 @@
-export type SingletonManagerConstructor<Type> = new () => Type;
-
-export type SingletonManagerConstructorKey = abstract new (
-	...args: never[]
-) => unknown;
+import type { SingletonManagerConstructor } from './singletonManagerConstructor';
+import type { SingletonManagerConstructorKey } from './singletonManagerConstructorKey';
 
 export class SingletonManager {
 	public static configurations: object = {};
@@ -61,7 +58,7 @@ export class SingletonManager {
 			return instance;
 		} catch {
 			throw new Error(
-				"Exception found at 'QLogicae.Aklot1.SingletonManager.getSingleton()'"
+				"Error at 'QLogicae.Aklot1' - Something went wrong here"
 			);
 		}
 	}
@@ -74,7 +71,7 @@ export class SingletonManager {
 		try {
 			if (instanceCount <= 0) {
 				throw new Error(
-					"Exception found at 'QLogicae.Aklot1.SingletonManager.getSingletonFromPool()'"
+					"Error at 'QLogicae.Aklot1' - Something went wrong here"
 				);
 			}
 
@@ -95,7 +92,7 @@ export class SingletonManager {
 			return instances[Math.abs(index) % instanceCount]!;
 		} catch {
 			throw new Error(
-				"Exception found at 'QLogicae.Aklot1.SingletonManager.getSingletonFromPool()'"
+				"Error at 'QLogicae.Aklot1' - Something went wrong here"
 			);
 		}
 	}

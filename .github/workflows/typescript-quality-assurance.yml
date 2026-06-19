@@ -85,7 +85,7 @@ jobs:
               with:
                   bun-version: latest
 
-            - run: sleep 30
+            - run: sleep 15
 
             - if: matrix.package_manager == 'npm'
               run: npm install qlogicae_aklot@latest

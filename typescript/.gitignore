@@ -1,6 +1,11 @@
 # dependencies (bun install)
 node_modules
 
+.temp/**/*
+.temporary/**/*
+temp/**/*
+temporary/**/*
+
 # output
 out/**/*
 dist/**/*
