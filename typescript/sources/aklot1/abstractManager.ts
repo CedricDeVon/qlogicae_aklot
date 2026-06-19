@@ -12,11 +12,13 @@ export abstract class AbstractManager<
 	}
 
 	public construct(): boolean {
-		return true;
+		return this.setup(
+			new (this.configurations.constructor as new () => Configurations)()
+		);
 	}
 
 	public destruct(): boolean {
-		return true;
+		return this.reset();
 	}
 
 	public setup(newConfigurations: Configurations): boolean {
@@ -34,12 +36,12 @@ export abstract class AbstractManager<
 
 	public handleErrorOutputs(message: string): boolean;
 
-	public handleErrorOutputs(error: Error): boolean;
+	public handleErrorOutputs(error: unknown): boolean;
 
 	public handleErrorOutputs(title: string, message: string): boolean;
 
 	public handleErrorOutputs(
-		error: string | Error,
+		error: string | unknown,
 		message?: string
 	): boolean {
 		if (error instanceof Error) {
@@ -51,7 +53,7 @@ export abstract class AbstractManager<
 		if (message !== undefined) {
 			return SingletonManager.getSingleton(
 				ErrorManager
-			).handleErrorOutputs(error, message);
+			).handleErrorOutputs(error as string, message);
 		}
 
 		return SingletonManager.getSingleton(ErrorManager).handleErrorOutputs(

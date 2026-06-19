@@ -22,9 +22,7 @@ export class VsuIdValidationManager extends AbstractManager<VsuIdValidationManag
 				VsuIdManager
 			).configurations.vsuIdRegex.test(id);
 		} catch (error: unknown) {
-			if (error instanceof Error) {
-				this.handleErrorOutputs(error);
-			}
+			this.handleErrorOutputs(error);
 
 			return false;
 		}
@@ -48,9 +46,7 @@ export class VsuIdValidationManager extends AbstractManager<VsuIdValidationManag
 
 			return outputs;
 		} catch (error: unknown) {
-			if (error instanceof Error) {
-				this.handleErrorOutputs(error);
-			}
+			this.handleErrorOutputs(error);
 
 			return new Map<string, boolean>();
 		}

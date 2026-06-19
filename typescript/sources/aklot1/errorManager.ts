@@ -7,14 +7,34 @@ export class ErrorManager {
 		this.configurations = new ErrorManagerConfigurations();
 	}
 
+	public construct(): boolean {
+		return this.setup(new ErrorManagerConfigurations());
+	}
+
+	public destruct(): boolean {
+		return this.reset();
+	}
+
+	public setup(newConfigurations: ErrorManagerConfigurations): boolean {
+		this.configurations = newConfigurations;
+
+		return true;
+	}
+
+	public reset(): boolean {
+		this.configurations = new ErrorManagerConfigurations();
+
+		return true;
+	}
+
 	public transformToErrorLog(message: string): string;
 
-	public transformToErrorLog(error: Error): string;
+	public transformToErrorLog(error: unknown): string;
 
 	public transformToErrorLog(title: string, message: string): string;
 
 	public transformToErrorLog(
-		value1: string | Error,
+		value1: string | unknown,
 		value2?: string
 	): string {
 		if (value1 instanceof Error) {
@@ -30,12 +50,12 @@ export class ErrorManager {
 
 	public handleErrorOutputs(message: string): boolean;
 
-	public handleErrorOutputs(error: Error): boolean;
+	public handleErrorOutputs(error: unknown): boolean;
 
 	public handleErrorOutputs(title: string, message: string): boolean;
 
 	public handleErrorOutputs(
-		error: string | Error,
+		error: string | unknown,
 		message?: string
 	): boolean {
 		if (error instanceof Error) {
@@ -46,7 +66,7 @@ export class ErrorManager {
 
 		if (message !== undefined) {
 			this.handleErrorOutputConditions(
-				this.transformToErrorLog(error, message)
+				this.transformToErrorLog(error as string, message)
 			);
 
 			return true;

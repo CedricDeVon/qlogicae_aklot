@@ -26,9 +26,7 @@ export class VsuIdGenerationManager extends AbstractManager<VsuIdGenerationManag
 				.toString()
 				.padStart(5, '0')}`;
 		} catch (error: unknown) {
-			if (error instanceof Error) {
-				this.handleErrorOutputs(error);
-			}
+			this.handleErrorOutputs(error);
 
 			return '';
 		}
@@ -38,8 +36,7 @@ export class VsuIdGenerationManager extends AbstractManager<VsuIdGenerationManag
 		try {
 			if (
 				!this.configurations.isEnabledForRuntimeExecutionHandling() ||
-				(this.configurations.isEnabledForEdgeCaseHandling() &&
-					size === 0)
+				(this.configurations.isEnabledForEdgeCaseHandling() && size < 1)
 			) {
 				return [];
 			}
@@ -52,9 +49,7 @@ export class VsuIdGenerationManager extends AbstractManager<VsuIdGenerationManag
 
 			return outputs;
 		} catch (error: unknown) {
-			if (error instanceof Error) {
-				this.handleErrorOutputs(error);
-			}
+			this.handleErrorOutputs(error);
 
 			return [];
 		}

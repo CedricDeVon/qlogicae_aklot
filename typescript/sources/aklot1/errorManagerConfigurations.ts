@@ -9,9 +9,9 @@ export class ErrorManagerConfigurations extends AbstractManagerConfigurations {
 
 	public isAsynchronousOutputOverrideEnabled: boolean;
 
-	public isRuntimeThrowOutputEnabled: boolean;
-
 	public isConsoleOutputEnabled: boolean;
+
+	public isRuntimeThrowOutputEnabled: boolean;
 
 	public title: string = `Error at 'QLogicae.Aklot1'`;
 
@@ -24,10 +24,10 @@ export class ErrorManagerConfigurations extends AbstractManagerConfigurations {
 
 		this.isOutputEnabled = true;
 		this.isOutputOverrideEnabled = false;
-		this.isRuntimeThrowOutputEnabled = false;
-		this.isConsoleOutputEnabled = true;
 		this.isAsynchronousOutputEnabled = true;
 		this.isAsynchronousOutputOverrideEnabled = false;
+		this.isConsoleOutputEnabled = true;
+		this.isRuntimeThrowOutputEnabled = false;
 	}
 
 	public isEnabledForRuntimeThrowOutput(): boolean {

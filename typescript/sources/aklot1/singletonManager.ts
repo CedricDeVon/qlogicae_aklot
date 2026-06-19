@@ -1,8 +1,9 @@
 import type { SingletonManagerConstructor } from './singletonManagerConstructor';
+import { SingletonManagerConfigurations } from './singletonManagerConfigurations';
 import type { SingletonManagerConstructorKey } from './singletonManagerConstructorKey';
 
 export class SingletonManager {
-	public static configurations: object = {};
+	public static configurations: SingletonManagerConfigurations;
 
 	private static readonly singletons = new Map<
 		SingletonManagerConstructorKey,
@@ -19,23 +20,24 @@ export class SingletonManager {
 	public constructor() {}
 
 	public static construct(): boolean {
-		return true;
+		return SingletonManager.setup(new SingletonManagerConfigurations());
 	}
 
 	public static destruct(): boolean {
-		this.singletons.clear();
-		this.singletonArrays.clear();
-
-		return true;
+		return SingletonManager.reset();
 	}
 
-	public static setup(newConfigurations: object): boolean {
+	public static setup(
+		newConfigurations: SingletonManagerConfigurations
+	): boolean {
 		this.configurations = newConfigurations;
 
 		return true;
 	}
 
 	public static reset(): boolean {
+		this.configurations = new SingletonManagerConfigurations();
+
 		this.singletons.clear();
 		this.singletonArrays.clear();
 
