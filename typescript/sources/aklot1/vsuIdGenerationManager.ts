@@ -34,17 +34,11 @@ export class VsuIdGenerationManager extends AbstractManager<VsuIdGenerationManag
 
 	public generateMany(size: number): string[] {
 		try {
-			if (
-				!this.configurations.isEnabledForRuntimeExecutionHandling() ||
-				(this.configurations.isEnabledForEdgeCaseHandling() && size < 1)
-			) {
-				return [];
-			}
-
 			const outputs: string[] = [];
 
 			while (size) {
 				outputs.push(this.generateOne());
+				--size;
 			}
 
 			return outputs;

@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { SingletonManager } from '../../qlogicae/aklot1/singletonManager';
+import { SingletonManagerConfigurations } from '../../qlogicae/aklot1/singletonManagerConfigurations';
 
 class TestClass {
 	public readonly value = Math.random();
@@ -19,12 +20,12 @@ class ThrowingClass {
 describe('SingletonManagerTest', () => {
 	beforeEach(() => {
 		SingletonManager.destruct();
-		SingletonManager.configurations = {};
+		SingletonManager.configurations = new SingletonManagerConfigurations();
 	});
 
 	afterEach(() => {
 		SingletonManager.destruct();
-		SingletonManager.configurations = {};
+		SingletonManager.configurations = new SingletonManagerConfigurations();
 	});
 
 	it('should_return_true_when_construct_called', () => {
@@ -36,9 +37,7 @@ describe('SingletonManagerTest', () => {
 	});
 
 	it('should_replace_configuration_when_setup_called', () => {
-		const configuration = {
-			value: 10
-		};
+		const configuration = new SingletonManagerConfigurations();
 
 		expect(SingletonManager.setup(configuration)).toBe(true);
 
@@ -58,15 +57,13 @@ describe('SingletonManagerTest', () => {
 	});
 
 	it('should_preserve_configuration_when_reset_called', () => {
-		const configuration = {
-			test: true
-		};
+		const configuration = new SingletonManagerConfigurations();
 
 		SingletonManager.setup(configuration);
 
 		SingletonManager.reset();
 
-		expect(SingletonManager.configurations).toBe(configuration);
+		expect(SingletonManager.configurations).toStrictEqual(configuration);
 	});
 
 	it.each([TestClass, AlternateClass])(

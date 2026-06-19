@@ -5,6 +5,7 @@ export default mergeConfig(baseConfig, {
 	test: {
 		coverage: {
 			reportsDirectory: './reports/tests/bench'
-		}
+		},
+		include: ['./tests/**/*.bench.ts']
 	}
 });

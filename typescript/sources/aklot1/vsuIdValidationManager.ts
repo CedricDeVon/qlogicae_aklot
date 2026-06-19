@@ -30,14 +30,6 @@ export class VsuIdValidationManager extends AbstractManager<VsuIdValidationManag
 
 	public validateMany(ids: string[]): Map<string, boolean> {
 		try {
-			if (
-				!this.configurations.isEnabledForRuntimeExecutionHandling() ||
-				(this.configurations.isEnabledForEdgeCaseHandling() &&
-					ids.length === 0)
-			) {
-				return new Map();
-			}
-
 			const outputs: Map<string, boolean> = new Map();
 
 			for (const id of ids) {
