@@ -1,8 +1,7 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 
-import { ErrorManagerConfigurations } from '../../qlogicae/aklot1/errorManagerConfigurations';
-
 import { ErrorManager } from '../../qlogicae/aklot1/errorManager';
+import { ErrorManagerConfigurations } from '../../qlogicae/aklot1/errorManagerConfigurations';
 
 class ThrowingSetupErrorManager extends ErrorManager {
 	public override setup(_configuration: ErrorManagerConfigurations): boolean {
@@ -333,29 +332,135 @@ describe('ErrorManagerTest', () => {
 
 			expect(handle_error_outputs_spy).toHaveBeenCalledTimes(1);
 		});
+
+		it('should_respect_override_mode_for_runtime_throw_and_console', () => {
+			error_manager.configurations.isOutputOverrideEnabled = true;
+			error_manager.configurations.isOutputEnabled = true;
+			error_manager.configurations.isRuntimeThrowOutputEnabled = true;
+			error_manager.configurations.isConsoleOutputEnabled = true;
+
+			const log_spy = vi
+				.spyOn(console, 'log')
+				.mockImplementation(() => {});
+
+			expect(() =>
+				error_manager.handleErrorOutputConditions('failure')
+			).toThrow();
+
+			expect(log_spy).toHaveBeenCalled();
+		});
+
+		it('should_not_throw_when_runtime_throw_disabled_even_if_console_enabled', () => {
+			error_manager.configurations.isOutputOverrideEnabled = false;
+			error_manager.configurations.isRuntimeThrowOutputEnabled = false;
+			error_manager.configurations.isConsoleOutputEnabled = true;
+			error_manager.configurations.isRuntimeExecutionHandlingEnabled = true;
+
+			const log_spy = vi
+				.spyOn(console, 'log')
+				.mockImplementation(() => {});
+
+			const result = error_manager.handleErrorOutputConditions('failure');
+
+			expect(result).toBe(true);
+			expect(log_spy).toHaveBeenCalled();
+		});
+
+		it('should_handle_empty_string_as_valid_error_input', () => {
+			const result = error_manager.handleErrorOutputs('');
+			expect(result).toBe(true);
+		});
+
+		it('should_handle_numeric_like_unknown_input_in_handleErrorOutputs', () => {
+			const result = error_manager.handleErrorOutputs(
+				123 as unknown as string
+			);
+			expect(result).toBe(true);
+		});
+
+		it('should_use_custom_title_when_transforming_error_log', () => {
+			error_manager.configurations.title = 'CustomTitle';
+
+			const result = error_manager.transformToErrorLog('message');
+
+			expect(result).toContain('CustomTitle');
+			expect(result).toContain('message');
+		});
+
+		it('should_handle_subclassed_error_instances', () => {
+			class CustomError extends Error {
+				constructor() {
+					super('custom failure');
+					this.name = 'CustomError';
+				}
+			}
+
+			const result = error_manager.transformToErrorLog(new CustomError());
+
+			expect(result).toContain('CustomError');
+			expect(result).toContain('custom failure');
+		});
+
+		it('should_exercise_override_enabled_console_flag_false_path', () => {
+			error_manager.configurations.isOutputOverrideEnabled = true;
+			error_manager.configurations.isOutputEnabled = false;
+			error_manager.configurations.isConsoleOutputEnabled = true;
+
+			const log_spy = vi
+				.spyOn(console, 'log')
+				.mockImplementation(() => {});
+
+			error_manager.handleErrorOutputConditions('x');
+
+			expect(log_spy).not.toHaveBeenCalled();
+		});
+
+		it('should_exercise_override_enabled_runtime_throw_false_path', () => {
+			error_manager.configurations.isOutputOverrideEnabled = true;
+			error_manager.configurations.isOutputEnabled = false;
+			error_manager.configurations.isRuntimeThrowOutputEnabled = true;
+
+			expect(() =>
+				error_manager.handleErrorOutputConditions('x')
+			).not.toThrow();
+		});
+
+		it('should_process_error_like_object_in_handleErrorOutputs', () => {
+			const log_spy = vi
+				.spyOn(console, 'log')
+				.mockImplementation(() => {});
+
+			const result = error_manager.handleErrorOutputs({
+				name: 'XError',
+				message: 'fail'
+			} as unknown);
+
+			expect(result).toBe(true);
+			expect(log_spy).toHaveBeenCalled();
+		});
+
+		it('should_return_false_when_setup_throws_exception', () => {
+			const manager = new ThrowingSetupErrorManager();
+
+			const handle_error_outputs_spy = vi
+				.spyOn(manager, 'handleErrorOutputs')
+				.mockImplementation(() => true);
+
+			expect(manager.setup(new ErrorManagerConfigurations())).toBe(false);
+
+			expect(handle_error_outputs_spy).toHaveBeenCalledTimes(1);
+		});
+
+		it('should_return_false_when_reset_throws_exception', () => {
+			const manager = new ThrowingResetErrorManager();
+
+			const handle_error_outputs_spy = vi
+				.spyOn(manager, 'handleErrorOutputs')
+				.mockImplementation(() => true);
+
+			expect(manager.reset()).toBe(false);
+
+			expect(handle_error_outputs_spy).toHaveBeenCalledTimes(1);
+		});
 	});
-});
-
-it('should_return_false_when_setup_throws_exception', () => {
-	const manager = new ThrowingSetupErrorManager();
-
-	const handle_error_outputs_spy = vi
-		.spyOn(manager, 'handleErrorOutputs')
-		.mockImplementation(() => true);
-
-	expect(manager.setup(new ErrorManagerConfigurations())).toBe(false);
-
-	expect(handle_error_outputs_spy).toHaveBeenCalledTimes(1);
-});
-
-it('should_return_false_when_reset_throws_exception', () => {
-	const manager = new ThrowingResetErrorManager();
-
-	const handle_error_outputs_spy = vi
-		.spyOn(manager, 'handleErrorOutputs')
-		.mockImplementation(() => true);
-
-	expect(manager.reset()).toBe(false);
-
-	expect(handle_error_outputs_spy).toHaveBeenCalledTimes(1);
 });

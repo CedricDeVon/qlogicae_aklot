@@ -247,4 +247,73 @@ describe('SingletonManagerTest', () => {
 
 		expect(configuration.isEnabledForErrorHandling()).toBe(false);
 	});
+
+	it('should_handle_nan_index_in_pool_without_crash', () => {
+		let instance: unknown;
+
+		expect(() => {
+			instance = SingletonManager.getSingletonFromPool(
+				TestClass,
+				5,
+				NaN as unknown as number
+			);
+		}).not.toThrow();
+
+		expect(instance).toBeUndefined();
+	});
+
+	it('should_return_same_instance_when_pool_size_is_one', () => {
+		const first = SingletonManager.getSingletonFromPool(TestClass, 1, 0);
+		const second = SingletonManager.getSingletonFromPool(TestClass, 1, 999);
+
+		expect(first).toBe(second);
+	});
+
+	it('should_reset_multiple_times_without_state_corruption', () => {
+		const a = SingletonManager.getSingleton(TestClass);
+
+		SingletonManager.reset();
+		const b = SingletonManager.getSingleton(TestClass);
+
+		SingletonManager.reset();
+		const c = SingletonManager.getSingleton(TestClass);
+
+		expect(a).not.toBe(b);
+		expect(b).not.toBe(c);
+	});
+
+	it('should_keep_singleton_map_stable_across_repeated_calls', () => {
+		const instances = Array.from({ length: 50 }, () =>
+			SingletonManager.getSingleton(TestClass)
+		);
+
+		for (const instance of instances) {
+			expect(instance).toBe(instances[0]);
+		}
+	});
+
+	it('should_return_new_configuration_instance_after_reset', () => {
+		const before = SingletonManager.configurations;
+
+		SingletonManager.reset();
+
+		const after = SingletonManager.configurations;
+
+		expect(after).toBeInstanceOf(SingletonManagerConfigurations);
+		expect(after).not.toBe(before);
+	});
+
+	it('should_reuse_same_pool_instances_across_multiple_calls', () => {
+		const firstBatch = Array.from({ length: 10 }, (_, i) =>
+			SingletonManager.getSingletonFromPool(TestClass, 5, i)
+		);
+
+		const secondBatch = Array.from({ length: 10 }, (_, i) =>
+			SingletonManager.getSingletonFromPool(TestClass, 5, i)
+		);
+
+		for (let i = 0; i < firstBatch.length; i++) {
+			expect(firstBatch[i]).toBe(secondBatch[i]);
+		}
+	});
 });

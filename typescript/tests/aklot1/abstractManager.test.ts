@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AbstractManager } from '../../qlogicae/aklot1/abstractManager';
-import { AbstractManagerConfigurations } from '../../qlogicae/aklot1/abstractManagerConfigurations';
 import { ErrorManager } from '../../qlogicae/aklot1/errorManager';
+import { AbstractManager } from '../../qlogicae/aklot1/abstractManager';
 import { SingletonManager } from '../../qlogicae/aklot1/singletonManager';
+import { AbstractManagerConfigurations } from '../../qlogicae/aklot1/abstractManagerConfigurations';
 
 class TestConfigurations extends AbstractManagerConfigurations {}
 
@@ -476,5 +476,124 @@ describe('AbstractManagerTest', () => {
 		);
 
 		expect(results.every((value) => value)).toBe(true);
+	});
+
+	it('should_resolve_full_override_matrix_runtime_edge_error_combination', () => {
+		const cfg = new TestConfigurations();
+
+		cfg.isOverrideEnabled = true;
+		cfg.isEnabled = true;
+		cfg.isRuntimeExecutionHandlingEnabled = false;
+		cfg.isEdgeCaseHandlingEnabled = true;
+		cfg.isErrorHandlingEnabled = false;
+
+		expect(cfg.isEnabledForRuntimeExecutionHandling()).toBe(true);
+		expect(cfg.isEnabledForEdgeCaseHandling()).toBe(true);
+		expect(cfg.isEnabledForErrorHandling()).toBe(true);
+	});
+
+	it('should_respect_runtime_disabled_over_edge_case_conditions', () => {
+		const cfg = new TestConfigurations();
+
+		cfg.isRuntimeExecutionHandlingEnabled = false;
+		cfg.isEdgeCaseHandlingEnabled = true;
+
+		expect(cfg.isDisabledForHandling(false)).toBe(true);
+		expect(cfg.isDisabledForHandling(true)).toBe(true);
+	});
+
+	it('should_respect_edge_case_disabled_blocks_condition_trigger', () => {
+		const cfg = new TestConfigurations();
+
+		cfg.isEdgeCaseHandlingEnabled = false;
+
+		expect(cfg.isDisabledForHandling(true)).toBe(false);
+	});
+
+	it('should_support_constructor_reflection_reset_with_multiple_cycles', () => {
+		const manager = new TestManager(new TestConfigurations());
+
+		const first = manager.configurations;
+
+		manager.reset();
+		const second = manager.configurations;
+
+		manager.reset();
+		const third = manager.configurations;
+
+		expect(first).not.toBe(second);
+		expect(second).not.toBe(third);
+	});
+
+	it('should_handle_mixed_async_setup_and_reset_race_condition', async () => {
+		const manager = new TestManager(new TestConfigurations());
+
+		const results = await Promise.all([
+			Promise.resolve(manager.setup(new TestConfigurations())),
+			Promise.resolve(manager.reset()),
+			Promise.resolve(manager.setup(new TestConfigurations())),
+			Promise.resolve(manager.reset())
+		]);
+
+		expect(results.every(Boolean)).toBe(true);
+	});
+
+	it('should_stabilize_state_under_concurrent_mutation', async () => {
+		const manager = new TestManager(new TestConfigurations());
+
+		await Promise.all(
+			Array.from({ length: 200 }, () =>
+				Promise.resolve(manager.setup(new TestConfigurations()))
+			)
+		);
+
+		await Promise.all(
+			Array.from({ length: 200 }, () => Promise.resolve(manager.reset()))
+		);
+
+		expect(manager.configurations).toBeInstanceOf(TestConfigurations);
+	});
+
+	it('should_handle_error_manager_return_false_path_indirectly', () => {
+		const manager = new TestManager(new TestConfigurations());
+
+		const error_mock = vi.fn().mockReturnValue(false);
+
+		vi.spyOn(SingletonManager, 'getSingleton').mockReturnValue({
+			handleErrorOutputs: error_mock
+		} as unknown as ErrorManager);
+
+		expect(manager.handleErrorOutputs('x')).toBe(false);
+		expect(error_mock).toHaveBeenCalled();
+	});
+
+	it('should_handle_error_manager_throwing_indirect_failure_path', () => {
+		const manager = new TestManager(new TestConfigurations());
+
+		vi.spyOn(SingletonManager, 'getSingleton').mockImplementation(() => {
+			throw new Error('boom');
+		});
+
+		expect(() => manager.handleErrorOutputs('x')).toThrow();
+	});
+
+	it('should_handle_constructor_reset_edge_case_with_prototype_mutation', () => {
+		const bad_config = new TestConfigurations();
+
+		Object.setPrototypeOf(bad_config, {
+			constructor: class {
+				public constructor() {
+					throw new Error('bad ctor');
+				}
+			}
+		});
+
+		const manager = new TestManager(
+			bad_config as unknown as TestConfigurations
+		);
+
+		const result = manager.reset();
+
+		expect(typeof result).toBe('boolean');
 	});
 });
