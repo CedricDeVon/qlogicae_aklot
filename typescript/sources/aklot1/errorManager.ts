@@ -7,24 +7,41 @@ export class ErrorManager {
 		this.configurations = new ErrorManagerConfigurations();
 	}
 
-	public construct(): boolean {
-		return this.setup(new ErrorManagerConfigurations());
-	}
-
-	public destruct(): boolean {
-		return this.reset();
-	}
-
 	public setup(newConfigurations: ErrorManagerConfigurations): boolean {
-		this.configurations = newConfigurations;
+		try {
+			if (
+				this.configurations.isDisabledForHandling(
+					newConfigurations === null ||
+						newConfigurations === undefined
+				)
+			) {
+				return false;
+			}
 
-		return true;
+			this.configurations = newConfigurations;
+
+			return true;
+		} catch (error: unknown) {
+			this.handleErrorOutputs(error);
+
+			return false;
+		}
 	}
 
 	public reset(): boolean {
-		this.configurations = new ErrorManagerConfigurations();
+		try {
+			if (this.configurations.isDisabledForHandling()) {
+				return false;
+			}
 
-		return true;
+			this.configurations = new ErrorManagerConfigurations();
+
+			return true;
+		} catch (error: unknown) {
+			this.handleErrorOutputs(error);
+
+			return false;
+		}
 	}
 
 	public transformToErrorLog(message: string): string;

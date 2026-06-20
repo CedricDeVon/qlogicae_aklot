@@ -11,9 +11,9 @@ export class VsuIdValidationManager extends AbstractManager<VsuIdValidationManag
 	public validateOne(id: string): boolean {
 		try {
 			if (
-				!this.configurations.isEnabledForRuntimeExecutionHandling() ||
-				(this.configurations.isEnabledForEdgeCaseHandling() &&
-					id === '')
+				this.configurations.isDisabledForHandling(
+					id === null || id === undefined || id === ''
+				)
 			) {
 				return false;
 			}
@@ -30,6 +30,14 @@ export class VsuIdValidationManager extends AbstractManager<VsuIdValidationManag
 
 	public validateMany(ids: string[]): Map<string, boolean> {
 		try {
+			if (
+				this.configurations.isDisabledForHandling(
+					ids === null || ids === undefined || ids.length === 0
+				)
+			) {
+				return new Map<string, boolean>();
+			}
+
 			const outputs: Map<string, boolean> = new Map();
 
 			for (const id of ids) {

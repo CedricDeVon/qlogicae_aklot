@@ -11,27 +11,42 @@ export abstract class AbstractManager<
 		this.configurations = newConfigurations;
 	}
 
-	public construct(): boolean {
-		return this.setup(
-			new (this.configurations.constructor as new () => Configurations)()
-		);
-	}
-
-	public destruct(): boolean {
-		return this.reset();
-	}
-
 	public setup(newConfigurations: Configurations): boolean {
-		this.configurations = newConfigurations;
+		try {
+			if (
+				this.configurations.isDisabledForHandling(
+					newConfigurations === null ||
+						newConfigurations === undefined
+				)
+			) {
+				return false;
+			}
 
-		return true;
+			this.configurations = newConfigurations;
+
+			return true;
+		} catch (error: unknown) {
+			this.handleErrorOutputs(error);
+
+			return false;
+		}
 	}
 
 	public reset(): boolean {
-		this.configurations = new (this.configurations
-			.constructor as new () => Configurations)();
+		try {
+			if (this.configurations.isDisabledForHandling()) {
+				return false;
+			}
 
-		return true;
+			this.configurations = new (this.configurations
+				.constructor as new () => Configurations)();
+
+			return true;
+		} catch (error: unknown) {
+			this.handleErrorOutputs(error);
+
+			return false;
+		}
 	}
 
 	public handleErrorOutputs(message: string): boolean;

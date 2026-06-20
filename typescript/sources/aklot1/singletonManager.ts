@@ -19,29 +19,42 @@ export class SingletonManager {
 
 	public constructor() {}
 
-	public static construct(): boolean {
-		return SingletonManager.setup(new SingletonManagerConfigurations());
-	}
-
-	public static destruct(): boolean {
-		return SingletonManager.reset();
-	}
-
 	public static setup(
 		newConfigurations: SingletonManagerConfigurations
 	): boolean {
-		this.configurations = newConfigurations;
+		try {
+			if (
+				this.configurations.isDisabledForHandling(
+					newConfigurations === null ||
+						newConfigurations === undefined
+				)
+			) {
+				return false;
+			}
 
-		return true;
+			this.configurations = newConfigurations;
+
+			return true;
+		} catch {
+			return false;
+		}
 	}
 
 	public static reset(): boolean {
-		this.configurations = new SingletonManagerConfigurations();
+		try {
+			if (this.configurations.isDisabledForHandling()) {
+				return false;
+			}
 
-		this.singletons.clear();
-		this.singletonArrays.clear();
+			this.configurations = new SingletonManagerConfigurations();
 
-		return true;
+			this.singletons.clear();
+			this.singletonArrays.clear();
+
+			return true;
+		} catch {
+			return false;
+		}
 	}
 
 	public static getSingleton<Type>(

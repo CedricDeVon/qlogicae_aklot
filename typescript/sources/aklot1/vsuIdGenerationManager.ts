@@ -8,10 +8,7 @@ export class VsuIdGenerationManager extends AbstractManager<VsuIdGenerationManag
 
 	public generateOne(): string {
 		try {
-			if (
-				!this.configurations.isEnabledForRuntimeExecutionHandling() ||
-				this.configurations.isEnabledForEdgeCaseHandling()
-			) {
+			if (this.configurations.isDisabledForHandling()) {
 				return '';
 			}
 
@@ -34,6 +31,14 @@ export class VsuIdGenerationManager extends AbstractManager<VsuIdGenerationManag
 
 	public generateMany(size: number): string[] {
 		try {
+			if (
+				this.configurations.isDisabledForHandling(
+					size === null || size === undefined || size < 1
+				)
+			) {
+				return [];
+			}
+
 			const outputs: string[] = [];
 
 			while (size) {

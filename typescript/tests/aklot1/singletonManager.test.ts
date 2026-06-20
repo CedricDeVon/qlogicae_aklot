@@ -19,21 +19,11 @@ class ThrowingClass {
 
 describe('SingletonManagerTest', () => {
 	beforeEach(() => {
-		SingletonManager.destruct();
 		SingletonManager.configurations = new SingletonManagerConfigurations();
 	});
 
 	afterEach(() => {
-		SingletonManager.destruct();
 		SingletonManager.configurations = new SingletonManagerConfigurations();
-	});
-
-	it('should_return_true_when_construct_called', () => {
-		expect(SingletonManager.construct()).toBe(true);
-	});
-
-	it('should_return_true_when_destruct_called', () => {
-		expect(SingletonManager.destruct()).toBe(true);
 	});
 
 	it('should_replace_configuration_when_setup_called', () => {
@@ -181,5 +171,80 @@ describe('SingletonManagerTest', () => {
 		for (let iteration = 0; iteration < 100_000; ++iteration) {
 			SingletonManager.getSingleton(TestClass);
 		}
+	});
+
+	it('should_return_false_when_setup_given_undefined_and_edge_case_handling_enabled', () => {
+		expect(
+			SingletonManager.setup(
+				undefined as unknown as SingletonManagerConfigurations
+			)
+		).toBe(false);
+	});
+
+	it('should_return_false_when_reset_called_and_runtime_execution_disabled', () => {
+		SingletonManager.configurations.isRuntimeExecutionHandlingEnabled = false;
+
+		expect(SingletonManager.reset()).toBe(false);
+	});
+
+	it('should_return_false_when_setup_throws', () => {
+		Object.defineProperty(SingletonManager, 'configurations', {
+			get() {
+				throw new Error('failure');
+			},
+			configurable: true
+		});
+
+		expect(
+			SingletonManager.setup(new SingletonManagerConfigurations())
+		).toBe(false);
+
+		Object.defineProperty(SingletonManager, 'configurations', {
+			value: new SingletonManagerConfigurations(),
+			writable: true,
+			configurable: true
+		});
+	});
+
+	it('should_return_false_when_reset_throws', () => {
+		Object.defineProperty(SingletonManager, 'configurations', {
+			get() {
+				throw new Error('failure');
+			},
+			configurable: true
+		});
+
+		expect(SingletonManager.reset()).toBe(false);
+
+		Object.defineProperty(SingletonManager, 'configurations', {
+			value: new SingletonManagerConfigurations(),
+			writable: true,
+			configurable: true
+		});
+	});
+
+	it('should_create_instance_when_singleton_not_yet_cached', () => {
+		const instance = SingletonManager.getSingleton(AlternateClass);
+
+		expect(instance).toBeInstanceOf(AlternateClass);
+	});
+
+	it('should_return_error_handling_flag_when_override_disabled', () => {
+		const configuration = new SingletonManagerConfigurations();
+
+		configuration.isOverrideEnabled = false;
+		configuration.isErrorHandlingEnabled = false;
+
+		expect(configuration.isEnabledForErrorHandling()).toBe(false);
+	});
+
+	it('should_return_enabled_state_for_error_handling_when_override_enabled', () => {
+		const configuration = new SingletonManagerConfigurations();
+
+		configuration.isOverrideEnabled = true;
+		configuration.isEnabled = false;
+		configuration.isErrorHandlingEnabled = true;
+
+		expect(configuration.isEnabledForErrorHandling()).toBe(false);
 	});
 });
