@@ -12,6 +12,9 @@
 		{
 			"path": ".github"
 		},
+		{
+			"path": ".temporary"
+		}
 	],
 	"settings": {}
 }
